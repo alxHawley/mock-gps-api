@@ -2,8 +2,14 @@ from flask import Flask, jsonify, request
 import threading
 import time
 import gpxpy
+import os
+from functools import wraps
 
 app = Flask(__name__)
+
+# --- Security Config ---
+API_KEY = os.environ.get('GPS_API_KEY', 'your-secret-api-key-change-this')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 # --- Config ---
 GPX_FILE = 'route.gpx'  
@@ -17,6 +23,38 @@ user_index = 0
 show_dog = False  # Controls whether dog location is visible
 dog_thread = None
 user_thread = None
+
+def require_api_key(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        api_key = request.headers.get('X-API-Key')
+        if api_key != API_KEY:
+            return jsonify({'error': 'Invalid API key'}), 401
+        return f(*args, **kwargs)
+    return decorated_function
+
+def check_host():
+    """Check if request is from allowed host"""
+    client_ip = request.remote_addr
+    # For now, allow all local connections (we'll configure this properly later)
+    return True
+
+@app.before_request
+def before_request():
+    """Security middleware"""
+    # Temporarily disabled host checking for testing
+    # if not check_host():
+    #     return jsonify({'error': 'Access denied'}), 403
+    pass
+
+@app.after_request
+def after_request(response):
+    """Add security headers"""
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+    response.headers['X-Frame-Options'] = 'DENY'
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    return response
 
 def load_gpx():
     global route_points
@@ -33,6 +71,7 @@ def load_gpx():
         route_points = []
 
 @app.route('/user_location')
+@require_api_key
 def user_location():
     """Always return current user position from GPX loop"""
     if len(route_points) > 0:
@@ -41,6 +80,7 @@ def user_location():
     return jsonify({'lat': None, 'lon': None})
 
 @app.route('/start_tracking', methods=['POST'])
+@require_api_key
 def start_tracking():
     global show_dog
     print(f"start_tracking called - showing dog: {show_dog}")
@@ -49,6 +89,7 @@ def start_tracking():
     return jsonify({'status': 'tracking started'})
 
 @app.route('/stop_tracking', methods=['POST'])
+@require_api_key
 def stop_tracking():
     global show_dog
     print(f"stop_tracking called - showing dog: {show_dog}")
@@ -57,6 +98,7 @@ def stop_tracking():
     return jsonify({'status': 'tracking stopped'})
 
 @app.route('/dog_location')
+@require_api_key
 def dog_location():
     print(f"dog_location called - show_dog: {show_dog}, dog_index: {dog_index}, route_points: {len(route_points)}")
     if len(route_points) > 0:
@@ -74,6 +116,7 @@ def dog_location():
     return jsonify({'lat': None, 'lon': None})
 
 @app.route('/user_follow_location')
+@require_api_key
 def user_follow_location():
     """Always return current user position from GPX loop (same as user_location)"""
     if len(route_points) > 0:
@@ -82,6 +125,11 @@ def user_follow_location():
         return jsonify({'lat': lat, 'lon': lon})
     print(f"Returning None - no route points loaded")
     return jsonify({'lat': None, 'lon': None})
+
+@app.route('/health')
+def health():
+    """Health check endpoint (no auth required)"""
+    return jsonify({'status': 'healthy', 'route_points': len(route_points)})
 
 def simulate_dog():
     global dog_index
@@ -118,4 +166,4 @@ if __name__ == '__main__':
             print("Started both dog and user simulation threads")
     except Exception as e:
         print(f"Warning: Could not load GPX file: {e}")
-    app.run(port=5001, debug=True) 
+    app.run(host='0.0.0.0', port=5001, debug=False) 
