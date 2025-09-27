@@ -6,41 +6,37 @@ case "$1" in
     start)
         echo "Starting Mock GPS API..."
         docker-compose up -d
-        echo "Service started. Check logs with: docker-compose logs -f"
         ;;
     stop)
         echo "Stopping Mock GPS API..."
         docker-compose down
-        echo "Service stopped."
         ;;
     restart)
         echo "Restarting Mock GPS API..."
-        docker-compose down
-        docker-compose up -d
-        echo "Service restarted."
+        docker-compose restart
         ;;
     logs)
-        echo "Showing logs..."
+        echo "Showing Mock GPS API logs..."
         docker-compose logs -f
         ;;
     status)
-        echo "Service status:"
+        echo "Mock GPS API status:"
         docker-compose ps
         ;;
     build)
-        echo "Building Docker image..."
+        echo "Building Mock GPS API..."
         docker-compose build
         ;;
     *)
         echo "Usage: $0 {start|stop|restart|logs|status|build}"
         echo ""
         echo "Commands:"
-        echo "  start   - Start the service"
-        echo "  stop    - Stop the service"
-        echo "  restart - Restart the service"
-        echo "  logs    - Show service logs"
-        echo "  status  - Show service status"
-        echo "  build   - Build Docker image"
+        echo "  start   - Start the API service"
+        echo "  stop    - Stop the API service"
+        echo "  restart - Restart the API service"
+        echo "  logs    - Show API logs"
+        echo "  status  - Show API status"
+        echo "  build   - Build the API container"
         exit 1
         ;;
-esac 
+esac

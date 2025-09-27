@@ -82,4 +82,9 @@ instance/
 .DS_Store
 
 # GPX/route files (optional, if you want to keep them out of git)
-#*.gpx 
+#*.gpx
+
+# Sensitive operational files
+monitor.sh
+manage.sh
+SETUP.md 

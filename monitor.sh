@@ -12,11 +12,12 @@ echo ""
 
 # Check if API is responding
 echo "API Health Check:"
-if curl -s -H "X-API-Key: 5bd5a5838868668c66bc265afb1036064ada1a6e0bb843f8624346cca360c6e3" http://localhost:5001/user_location > /dev/null; then
+if curl -s -H "X-API-Key: $API_KEY" http://localhost:5001/user_location > /dev/null; then
     echo "✅ API is responding"
-    echo "User location: $(curl -s -H "X-API-Key: 5bd5a5838868668c66bc265afb1036064ada1a6e0bb843f8624346cca360c6e3" http://localhost:5001/user_location)"
+    echo "User location: $(curl -s -H "X-API-Key: $API_KEY" http://localhost:5001/user_location)"
 else
     echo "❌ API is not responding"
+    echo "Note: Set API_KEY environment variable to test API endpoints"
 fi
 echo ""
 
@@ -27,4 +28,4 @@ echo ""
 
 # Show recent logs
 echo "Recent Docker Logs:"
-docker-compose logs --tail=10 
+docker-compose logs --tail=10

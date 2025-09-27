@@ -1,6 +1,6 @@
 # Mock GPS API
 
-A Flask application that extracts location data from a .GPX file to provide mock location data via Docker deployment for 24/7 operation. This is purpose built for a dog tracking application that I'd been developing against a commercially available API that I no longer have access to. This motivated me to build an API to continue development and test, as well as have a method to demo the application.
+A Flask application that simulates GPS tracking by extracting location data from GPX files. Built for continuous development and testing of a dog tracking application when commercial API access is unavailable.
 
 ## Features
 - **Continuous GPX Route Simulation**: Both user and dog continuously loop through the GPX route
@@ -75,13 +75,23 @@ docker-compose logs -f
 - `GPX_FILE = 'route.gpx'` — GPX file to use for route simulation
 - `PORT = 5001` — API server port
 
-## 24/7 Deployment
+## Production Deployment
 
-For production deployment with auto-startup, see [SETUP.md](SETUP.md) for detailed instructions including:
-- Systemd service configuration
-- Auto-restart policies
-- Health monitoring
-- Troubleshooting guide
+For production deployment, the application runs in Docker with auto-restart enabled:
+
+```bash
+# Start the service
+docker-compose up -d
+
+# Check status
+docker-compose ps
+
+# View logs
+docker-compose logs -f
+
+# Stop the service
+docker-compose down
+```
 
 ## Development vs Production
 
