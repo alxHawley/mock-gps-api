@@ -1,8 +1,9 @@
 # Mock GPS API
 
-A Flask application that simulates GPS tracking by extracting location data from GPX files. Built for continuous development and testing of a dog tracking application when commercial API access is unavailable.
+A Flask application that extracts location data from a .GPX file to provide mock location data via Docker deployment for 24/7 operation.
 
 ## Features
+
 - **Continuous GPX Route Simulation**: Both user and dog continuously loop through the GPX route
 - **Realistic Tracking Scenario**: Dog stays ahead of user by 15 seconds, creating a natural following effect
 - **Simple Visibility Control**: Start/Stop tracking just controls dog visibility on the map
@@ -11,6 +12,7 @@ A Flask application that simulates GPS tracking by extracting location data from
 - **Auto-restart**: Built-in resilience with automatic restart on failure
 
 ## How It Works
+
 - **User Position**: Always shows current GPX route position (continuously moving)
 - **Dog Position**: Always 15 seconds ahead of user on the same GPX route
 - **Start Tracking**: Shows dog icon on map and enables distance display
@@ -20,7 +22,7 @@ A Flask application that simulates GPS tracking by extracting location data from
 
 ### Prerequisites
 - Docker and Docker Compose installed
-- `route.gpx` file in the project directory - this can be any .GPX file named 'route'. For my current demo, I exported a .GPX route of a walk in a park from my Garmin device.
+- `route.gpx` file in the project directory
 
 ### Deployment
 ```bash
@@ -63,6 +65,7 @@ docker-compose logs -f
 3. The API will be available at `http://localhost:5001`
 
 ## API Endpoints
+
 - `GET /user_location` — Get current user position from GPX route
 - `GET /user_follow_location` — Same as user_location (for compatibility)
 - `GET /dog_location` — Get current dog position (returns None when hidden)
@@ -70,33 +73,21 @@ docker-compose logs -f
 - `POST /stop_tracking` — Hide dog from map and disable distance tracking
 
 ## Configuration
+
 - `UPDATE_INTERVAL = 1` — Seconds between position updates
 - `DOG_AHEAD_DELAY = 15` — Seconds ahead of user (dog will be 15 points ahead)
 - `GPX_FILE = 'route.gpx'` — GPX file to use for route simulation
 - `PORT = 5001` — API server port
 
-## Production Deployment
-
-For production deployment, the application runs in Docker with auto-restart enabled:
-
-```bash
-# Start the service
-docker-compose up -d
-
-# Check status
-docker-compose ps
-
-# View logs
-docker-compose logs -f
-
-# Stop the service
-docker-compose down
-```
-
 ## Development vs Production
 
 - **Development**: Use `python app.py` for local development
 - **Production**: Use Docker with `docker-compose up -d` for 24/7 operation
+
+## Documentation
+
+- [API Documentation](API.md) - Detailed API usage and examples
+- [Deployment Guide](../internal/DEPLOYMENT.md) - Production deployment instructions
 
 ---
 
