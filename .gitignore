@@ -77,6 +77,7 @@ instance/
 
 # VSCode
 .vscode/
+*.code-workspace
 
 # Mac
 .DS_Store
