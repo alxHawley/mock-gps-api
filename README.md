@@ -22,6 +22,21 @@ A Flask application that simulates GPS tracking by extracting location data from
 - Docker and Docker Compose installed
 - `route.gpx` file in the project directory - this can be any .GPX file named 'route'. For my current demo, I exported a .GPX route of a walk in a park from my Garmin device.
 
+### First Time Setup
+```bash
+# Clone and configure
+git clone <repository-url>
+cd mock-gps-api
+cp env.example .env
+
+# Generate API key and edit .env file
+openssl rand -hex 32
+nano .env
+
+# Add your GPX file
+cp /path/to/your/route.gpx ./route.gpx
+```
+
 ### Deployment
 ```bash
 # Build and start the service
@@ -33,6 +48,8 @@ docker-compose ps
 # View logs
 docker-compose logs -f
 ```
+
+**📖 For detailed setup instructions, see [USER_SETUP.md](USER_SETUP.md)**
 
 ### Management Scripts
 ```bash

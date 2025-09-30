@@ -24,6 +24,21 @@ A Flask application that extracts location data from a .GPX file to provide mock
 - Docker and Docker Compose installed
 - `route.gpx` file in the project directory
 
+### First Time Setup
+```bash
+# Clone and configure
+git clone <repository-url>
+cd mock-gps-api
+cp env.example .env
+
+# Generate API key and edit .env file
+openssl rand -hex 32
+nano .env
+
+# Add your GPX file
+cp /path/to/your/route.gpx ./route.gpx
+```
+
 ### Deployment
 ```bash
 # Build and start the service
@@ -35,6 +50,8 @@ docker-compose ps
 # View logs
 docker-compose logs -f
 ```
+
+**📖 For detailed setup instructions, see [USER_SETUP.md](../../USER_SETUP.md)**
 
 ### Management Scripts
 ```bash

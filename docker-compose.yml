@@ -11,7 +11,7 @@ services:
     environment:
       - FLASK_ENV=production
       - FLASK_DEBUG=0
-      - GPS_API_KEY=${GPS_API_KEY:-your-secret-api-key-change-this}
+      - GPS_API_KEY=${GPS_API_KEY}
       - ALLOWED_HOSTS=${ALLOWED_HOSTS:-127.0.0.1,localhost}
     env_file:
       - .env
