@@ -23,7 +23,7 @@ services:
     tmpfs:
       - /tmp
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5001/user_location"]
+      test: ["CMD", "python", "-c", "import urllib.request, os; req = urllib.request.Request('http://localhost:5001/user_location'); req.add_header('X-API-Key', os.environ.get('GPS_API_KEY')); urllib.request.urlopen(req)"]
       interval: 30s
       timeout: 10s
       retries: 3

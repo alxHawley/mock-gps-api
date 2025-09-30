@@ -68,7 +68,7 @@ sudo journalctl -u mock-gps-api.service -f
 
 ```bash
 # Set your API key (replace with your actual key)
-export API_KEY="your-secret-api-key-change-this"
+export API_KEY="your-actual-api-key-here"
 ```
 
 #### Get User Location
@@ -104,7 +104,7 @@ curl -H "X-API-Key: $API_KEY" http://localhost:5001/user_follow_location
 ### Quick Test Sequence
 ```bash
 # Test complete workflow
-export API_KEY="your-secret-api-key-change-this"
+export API_KEY="your-actual-api-key-here"
 curl -H "X-API-Key: $API_KEY" http://localhost:5001/user_location
 curl -H "X-API-Key: $API_KEY" http://localhost:5001/dog_location
 curl -X POST -H "X-API-Key: $API_KEY" http://localhost:5001/start_tracking

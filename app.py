@@ -8,7 +8,9 @@ from functools import wraps
 app = Flask(__name__)
 
 # --- Security Config ---
-API_KEY = os.environ.get('GPS_API_KEY', 'your-secret-api-key-change-this')
+API_KEY = os.environ.get('GPS_API_KEY')
+if not API_KEY:
+    raise ValueError("GPS_API_KEY environment variable is required")
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
 # --- Config ---

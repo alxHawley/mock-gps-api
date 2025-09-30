@@ -97,7 +97,7 @@ Headers: X-API-Key: <api_key>
 ### Complete Workflow Test
 ```bash
 # Set your API key
-export API_KEY="your-secret-api-key-change-this"
+export API_KEY="your-actual-api-key-here"
 
 # Test user location
 curl -H "X-API-Key: $API_KEY" http://localhost:5001/user_location
